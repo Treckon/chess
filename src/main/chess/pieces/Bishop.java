@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class Bishop extends ChessPieceImpl{
-    private ChessGame.TeamColor color;
+
 
     public Bishop(ChessGame.TeamColor c){
         super(c, ChessPiece.PieceType.BISHOP);

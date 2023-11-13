@@ -8,6 +8,7 @@ import ServerImpl.Responses.*;
 import ServerImpl.Services.*;
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
+import dataAccess.Database;
 import spark.*;
 import spark.Request;
 import spark.Response;
@@ -17,10 +18,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.FileHandler;
 
 public class MainServer {
+    private Database db = new Database();
     private ArrayList<String> names = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -30,6 +33,14 @@ public class MainServer {
     private void run() {
         // Specify the port you want the server to listen on
         Spark.port(8080);
+        try{
+            configureDatabase();
+        }catch(SQLException s){
+            System.out.println(s.getMessage());
+        }catch(DataAccessException e){
+            System.out.println(e.getMessage());
+        }
+
 
         // Register a directory for hosting static files
         Spark.externalStaticFileLocation("web");
@@ -165,9 +176,9 @@ public class MainServer {
         CreateGameService service = new CreateGameService();
         CreateGameResponse response = service.createGame(request);
 
-        if(response.getMessage() == "Error: bad request"){
+        if(Objects.equals(response.getMessage(), "Error: bad request")){
             res.status(400);
-        } else if(response.getMessage() == "Error: unauthorized"){
+        } else if(Objects.equals(response.getMessage(), "Error: unauthorized")){
             res.status(401);
         } else if(response.getMessage() != null){
             res.status(500);
@@ -196,7 +207,7 @@ public class MainServer {
         JoinGameService service = new JoinGameService();
         JoinGameResponse response = service.joinGame(request);
 
-        if(response.getMessage() == "Error: bad request"){
+        if(Objects.equals(response.getMessage(), "Error: bad request")){
             res.status(400);
         } else if(response.getMessage() == "Error: unauthorized"){
             res.status(401);
@@ -214,15 +225,64 @@ public class MainServer {
     private Boolean validate(Request req){
         var authToken = req.headers("Authorization");
         AuthDAOImpl auths = new AuthDAOImpl();
+        Boolean validated = false;
 
         try{
-            auths.verifyAuthToken(authToken);
+            validated = auths.verifyAuthToken(authToken);
         }catch (DataAccessException e){
-
             return false;
         }
-        return true;
+        return validated;
     }
+
+    void configureDatabase() throws SQLException, DataAccessException {
+
+        try (var conn = db.getConnection()) {
+            var createDbStatement = conn.prepareStatement("CREATE DATABASE IF NOT EXISTS chess");
+            createDbStatement.executeUpdate();
+
+            conn.setCatalog("chess");
+
+            var createTables = """
+            CREATE TABLE  IF NOT EXISTS UserDAO (
+                username VARCHAR(255) NOT NULL,
+                password VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                PRIMARY KEY (username)
+            )
+            """;
+            var createAuthDAO = """
+            CREATE TABLE IF NOT EXISTS AuthDAO (
+                authtoken VARCHAR(255) NOT NULL,
+                username VARCHAR(255) NOT NULL,
+                PRIMARY KEY (authtoken)
+            )
+            """;
+            var createGameDAO = """
+            CREATE TABLE IF NOT EXISTS GameDAO (
+                gameid INT NOT NULL AUTO_INCREMENT,
+                game longtext NOT NULL,
+                whiteplayer VARCHAR(255),
+                blackplayer VARCHAR(255),
+                gamename VARCHAR(255) NOT NULL,
+                PRIMARY KEY (gameid)
+            )
+            """;
+
+
+            try (var createTableStatement = conn.prepareStatement(createTables)) {
+                createTableStatement.executeUpdate();
+            }
+            try (var createTableStatement = conn.prepareStatement(createAuthDAO)) {
+                createTableStatement.executeUpdate();
+            }
+            try (var createTableStatement = conn.prepareStatement(createGameDAO)) {
+                createTableStatement.executeUpdate();
+            }
+
+        }
+    }
+
 
 
 }

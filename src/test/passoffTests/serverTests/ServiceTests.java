@@ -8,8 +8,14 @@ import ServerImpl.Objects.*;
 import ServerImpl.Requests.*;
 import ServerImpl.Responses.*;
 import ServerImpl.Services.*;
+import chess.ChessGameImpl;
+import com.google.gson.Gson;
 import dataAccess.DataAccessException;
+import dataAccess.Database;
 import org.junit.jupiter.api.*;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ServiceTests {
@@ -197,15 +203,24 @@ public class ServiceTests {
         }
 
         LogoutService logout = new LogoutService();
-        logout.logout(new LogoutRequest(new AuthTokenImpl("darthconner2000", "upupdowndownleftrightleftrightabselectstart")));
-
+        logout.logout(new LogoutRequest(new AuthTokenImpl("darthconner2000", loginResponse.getAuthToken())));
+        /*
         try{
             auth = auths.getCurrentToken();
         }catch(DataAccessException e){
             return;
         }
 
-        Assertions.assertNotEquals(null, auth, "CurrentToken null");
+         */
+        Boolean verified = true;
+        try{
+            verified = auths.verifyAuthToken(loginResponse.getAuthToken());
+        }catch(DataAccessException e){
+
+        }
+
+        Assertions.assertNotEquals(true, verified, "Token still in there");
+
     }
 
     @Test
@@ -224,11 +239,9 @@ public class ServiceTests {
 
 
 
-        try{
-            auth = auths.getCurrentToken();
-        }catch (DataAccessException e){
-            return;
-        }
+        auth = new AuthTokenImpl(registerResponse.getUsername(), registerResponse.getAuthToken());
+
+
 
         CreateGameService gameService = new CreateGameService();
         CreateGameResponse response = gameService.createGame(new CreateGameRequest("War Games", auth));
@@ -337,7 +350,7 @@ public class ServiceTests {
     @Test
     @Order(11)
     @DisplayName("JoinGame Success")
-    public void successfullJoinGame() {
+    public void successfullJoinGame() throws DataAccessException {
         UserDAOImpl users = new UserDAOImpl();
         AuthDAOImpl auths = new AuthDAOImpl();
 
@@ -361,13 +374,32 @@ public class ServiceTests {
         JoinGameResponse response = service.joinGame(new JoinGameRequest("WHITE",createGameResponse.getGameID(),auth));
 
         GameDAOImpl games = new GameDAOImpl();
-        Game game;
+        ChessGameImpl game;
         try {
             game = games.findGame(createGameResponse.getGameID());
         }catch (DataAccessException e){
             return;
         }
-        Assertions.assertEquals("darthconner2000", game.getWhiteUsername(), "White Username not Established");
+
+        Database db = new Database();
+        Connection conn = null;
+        String whiteUser = null;
+        try {
+            conn = db.getConnection();
+            var preparedStatement = conn.prepareStatement("SELECT gameid, whiteplayer FROM GameDAO WHERE gameid=?");
+            preparedStatement.setInt(1, createGameResponse.getGameID());
+
+            try(var rs = preparedStatement.executeQuery()){
+                rs.next();
+                whiteUser = rs.getString("whiteplayer");
+            }
+        } catch (SQLException | DataAccessException ex) {
+            ex.printStackTrace();
+        }finally{
+            db.closeConnection(conn);
+        }
+
+        Assertions.assertEquals("darthconner2000", whiteUser, "White Username not Established");
 
 
     }
@@ -399,7 +431,7 @@ public class ServiceTests {
         JoinGameResponse response = service.joinGame(new JoinGameRequest("WHITE",createGameResponse.getGameID(),auth));
 
         GameDAOImpl games = new GameDAOImpl();
-        Game game;
+        ChessGameImpl game;
         try {
             game = games.findGame(createGameResponse.getGameID());
         }catch (DataAccessException e){
@@ -412,7 +444,7 @@ public class ServiceTests {
         response = service.joinGame(new JoinGameRequest("BLACK",5,auth));
         Assertions.assertEquals("Error: bad request", response.getMessage(), "Add to bad ID");
         try{
-            game.joinGame("BLACK", "TheSenate");
+            games.joinGame("BLACK","darthconner2000", createGameResponse.getGameID());
         } catch (DataAccessException e){
             return;
         }

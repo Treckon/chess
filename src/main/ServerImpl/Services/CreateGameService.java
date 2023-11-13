@@ -22,14 +22,19 @@ public class CreateGameService {
 
     public CreateGameResponse createGame(CreateGameRequest createGameRequest){
         AuthDAOImpl auths = new AuthDAOImpl();
+        Boolean verified = false;
         if(createGameRequest.getCurrentToken() == null){
             return new CreateGameResponse("Error: unauthorized");
         }
 
         try{
-            auths.verifyAuthToken(createGameRequest.getCurrentToken().getToken());
+            verified = auths.verifyAuthToken(createGameRequest.getCurrentToken().getToken());
         } catch(DataAccessException e){
             return new CreateGameResponse(e.getMessage());
+        }
+
+        if(!verified){
+            return new CreateGameResponse("Error: unauthorized");
         }
 
         GameDAOImpl games = new GameDAOImpl();

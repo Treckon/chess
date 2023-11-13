@@ -19,6 +19,14 @@ public class GameImpl implements Game {
         implementation = new ChessGameImpl();
     }
 
+    public GameImpl(Integer ID, String name, String white, String black, ChessGameImpl game){
+        gameID = ID;
+        gameName = name;
+        whiteUsername = white;
+        blackUsername = black;
+        implementation = game;
+    }
+
     @Override
     public int getId() {
         return gameID;

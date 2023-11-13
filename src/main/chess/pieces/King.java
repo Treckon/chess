@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class King extends ChessPieceImpl {
-    private ChessGame.TeamColor color;
 
     public King(ChessGame.TeamColor c){
         super(c, PieceType.KING);

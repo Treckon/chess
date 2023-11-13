@@ -18,15 +18,20 @@ public class JoinGameService {
      */
     public JoinGameResponse joinGame(JoinGameRequest joinGameRequest){
         AuthDAOImpl auths = new AuthDAOImpl();
+        Boolean verified = false;
 
         if(joinGameRequest.getToken() == null){
             return new JoinGameResponse("Error: unauthorized");
         }
 
         try{
-            auths.verifyAuthToken(joinGameRequest.getToken().getToken());
+            verified = auths.verifyAuthToken(joinGameRequest.getToken().getToken());
         } catch(DataAccessException e){
             return new JoinGameResponse(e.getMessage());
+        }
+
+        if(!verified){
+            return new JoinGameResponse("Error: unauthorized");
         }
 
         GameDAOImpl games = new GameDAOImpl();

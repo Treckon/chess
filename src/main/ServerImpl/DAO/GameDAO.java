@@ -1,6 +1,7 @@
 package ServerImpl.DAO;
 
 import ServerImpl.Objects.Game;
+import chess.ChessGameImpl;
 import dataAccess.DataAccessException;
 
 import java.util.ArrayList;
@@ -27,7 +28,6 @@ public interface GameDAO {
      *
      * @param color color of user to be added.
      * @param GameId game that the user is joining.
-     * @param authToken token of user to be added.
      */
     public void joinGame(String color, String username, Integer GameId) throws DataAccessException;
 
@@ -38,7 +38,7 @@ public interface GameDAO {
      * @return game object for game found, otherwise null.
      */
 
-    public Game findGame(Integer gameId) throws DataAccessException;
+    public ChessGameImpl findGame(Integer gameId) throws DataAccessException;
 
     /**
      * Update current game state based on the game state

@@ -17,6 +17,7 @@ public class ClearService {
      */
     public ClearResponse clear(){
         AuthDAOImpl auths = new AuthDAOImpl();
+
         try{
             auths.clear();
         } catch(DataAccessException e){

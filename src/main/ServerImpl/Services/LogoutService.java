@@ -23,7 +23,7 @@ public class LogoutService {
             return new LogoutResponse(e.getMessage());
         }
         try{
-            auths.logout();
+            auths.logout(logoutRequest.getCurrentToken().getToken());
         }catch (DataAccessException e){
             return new LogoutResponse(e.getMessage());
         }

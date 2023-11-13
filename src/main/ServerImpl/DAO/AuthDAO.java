@@ -19,7 +19,7 @@ public interface AuthDAO {
      * Removes current Authtoken/username pair from the AuthDAO
      *
      */
-    public void logout() throws DataAccessException;
+    public void logout(String token) throws DataAccessException;
 
     /**
      * checks authtoken and if it exists, makes it the current authtoken

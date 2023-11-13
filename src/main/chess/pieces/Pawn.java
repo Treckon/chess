@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class Pawn extends ChessPieceImpl {
-    private ChessGame.TeamColor color;
     private Boolean firstMove = true;
 
     public Pawn(ChessGame.TeamColor c){
