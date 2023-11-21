@@ -1,9 +1,7 @@
 package dataAccess;
 
-import ServerImpl.Objects.GameImpl;
 import chess.ChessPiece;
 import chess.ChessPieceImpl;
-import chess.pieces.*;
 import com.google.gson.*;
 
 import java.lang.reflect.Type;

@@ -9,7 +9,6 @@ import ServerImpl.Requests.*;
 import ServerImpl.Responses.*;
 import ServerImpl.Services.*;
 import chess.ChessGameImpl;
-import com.google.gson.Gson;
 import dataAccess.DataAccessException;
 import dataAccess.Database;
 import org.junit.jupiter.api.*;

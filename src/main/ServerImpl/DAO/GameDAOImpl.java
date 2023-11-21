@@ -2,9 +2,6 @@ package ServerImpl.DAO;
 
 import ServerImpl.Objects.Game;
 import ServerImpl.Objects.GameImpl;
-import ServerImpl.Objects.UserImpl;
-import ServerImpl.Requests.JoinGameRequest;
-import chess.ChessGame;
 import chess.ChessGameImpl;
 import chess.ChessPieceImpl;
 import chess.ChessPositionImpl;
@@ -18,8 +15,6 @@ import dataAccess.PositionDeserializer;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 

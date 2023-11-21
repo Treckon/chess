@@ -4,7 +4,6 @@ import chess.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Objects;
 
 public class Rook extends ChessPieceImpl {
 
