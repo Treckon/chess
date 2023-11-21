@@ -1,4 +1,4 @@
-package ServerImpl.Responses;
+package Responses;
 /**
  * Contains response information from clearing all
  * data.

@@ -1,4 +1,4 @@
-package dataAccess;
+package deserializers;
 
 import chess.ChessPosition;
 import chess.ChessPositionImpl;

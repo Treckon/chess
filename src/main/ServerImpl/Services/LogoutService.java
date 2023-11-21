@@ -1,8 +1,8 @@
 package ServerImpl.Services;
 
 import ServerImpl.DAO.AuthDAOImpl;
-import ServerImpl.Requests.LogoutRequest;
-import ServerImpl.Responses.LogoutResponse;
+import Requests.LogoutRequest;
+import Responses.LogoutResponse;
 import dataAccess.DataAccessException;
 
 /**

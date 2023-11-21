@@ -1,15 +1,13 @@
 package ServerImpl.DAO;
 
-import ServerImpl.Objects.AuthToken;
-import ServerImpl.Objects.AuthTokenImpl;
-import ServerImpl.Objects.User;
-import ServerImpl.Objects.UserImpl;
+import Objects.AuthToken;
+import Objects.User;
+import Objects.UserImpl;
 import dataAccess.DataAccessException;
 import dataAccess.Database;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 

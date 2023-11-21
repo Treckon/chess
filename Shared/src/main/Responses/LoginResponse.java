@@ -1,6 +1,5 @@
-package ServerImpl.Responses;
+package Responses;
 
-import ServerImpl.Objects.AuthToken;
 /**
  * Contains response information from logging in user.
  *

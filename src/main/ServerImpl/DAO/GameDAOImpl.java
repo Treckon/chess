@@ -1,7 +1,7 @@
 package ServerImpl.DAO;
 
-import ServerImpl.Objects.Game;
-import ServerImpl.Objects.GameImpl;
+import Objects.Game;
+import Objects.GameImpl;
 import chess.ChessGameImpl;
 import chess.ChessPieceImpl;
 import chess.ChessPositionImpl;
@@ -9,8 +9,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dataAccess.DataAccessException;
 import dataAccess.Database;
-import dataAccess.GameDeserializer;
-import dataAccess.PositionDeserializer;
+import deserializers.GameDeserializer;
+import deserializers.PositionDeserializer;
 
 import java.sql.Connection;
 import java.sql.SQLException;

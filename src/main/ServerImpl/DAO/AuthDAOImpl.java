@@ -1,17 +1,14 @@
 package ServerImpl.DAO;
 
-import ServerImpl.Objects.AuthToken;
-import ServerImpl.Objects.AuthTokenImpl;
-import ServerImpl.Objects.UserImpl;
+import Objects.AuthToken;
+import Objects.AuthTokenImpl;
 import dataAccess.DataAccessException;
 import dataAccess.Database;
 
-import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
 
 public class AuthDAOImpl implements AuthDAO {

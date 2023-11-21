@@ -1,4 +1,4 @@
-package ServerImpl.Requests;
+package Requests;
 /**
  * Request class for containing info to log in users.
  *

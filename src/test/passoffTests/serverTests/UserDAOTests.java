@@ -2,9 +2,9 @@ package passoffTests.serverTests;
 
 import ServerImpl.DAO.AuthDAOImpl;
 import ServerImpl.DAO.UserDAOImpl;
-import ServerImpl.Objects.AuthToken;
-import ServerImpl.Objects.User;
-import ServerImpl.Objects.UserImpl;
+import Objects.AuthToken;
+import Objects.User;
+import Objects.UserImpl;
 import ServerImpl.Services.ClearService;
 import dataAccess.DataAccessException;
 import dataAccess.Database;

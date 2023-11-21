@@ -1,4 +1,4 @@
-package ServerImpl.Responses;
+package Responses;
 
 /**
  * This class is a template class for the various response objects that will be created.

@@ -1,4 +1,4 @@
-package ServerImpl.Requests;
+package Requests;
 
 /**
  * This Interface class will be implemented as several kinds of subclasses, each representing different requests.

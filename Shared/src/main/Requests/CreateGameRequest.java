@@ -1,8 +1,7 @@
-package ServerImpl.Requests;
+package Requests;
 
-import ServerImpl.DAO.AuthDAOImpl;
-import ServerImpl.Objects.AuthToken;
-import ServerImpl.Objects.AuthTokenImpl;
+
+import Objects.AuthToken;
 
 /**
  * Request class for creating a new Game.

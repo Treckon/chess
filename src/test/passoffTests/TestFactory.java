@@ -1,6 +1,7 @@
 package passoffTests;
 
 import chess.*;
+import chess.pieces.*;
 
 /**
  * Used for testing your code

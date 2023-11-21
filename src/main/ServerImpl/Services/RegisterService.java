@@ -1,15 +1,11 @@
 package ServerImpl.Services;
 
 import ServerImpl.DAO.AuthDAOImpl;
-import ServerImpl.DAO.GameDAOImpl;
-import ServerImpl.DAO.UserDAO;
 import ServerImpl.DAO.UserDAOImpl;
-import ServerImpl.Objects.AuthToken;
-import ServerImpl.Objects.AuthTokenImpl;
-import ServerImpl.Objects.UserImpl;
-import ServerImpl.Requests.RegisterRequest;
-import ServerImpl.Requests.Request;
-import ServerImpl.Responses.RegisterResponse;
+import Objects.AuthToken;
+import Objects.UserImpl;
+import Requests.RegisterRequest;
+import Responses.RegisterResponse;
 import dataAccess.DataAccessException;
 
 /**

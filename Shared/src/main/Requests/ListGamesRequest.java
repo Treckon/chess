@@ -1,7 +1,7 @@
-package ServerImpl.Requests;
+package Requests;
 
-import ServerImpl.DAO.AuthDAOImpl;
-import ServerImpl.Objects.AuthToken;
+
+import Objects.AuthToken;
 import dataAccess.DataAccessException;
 
 /**

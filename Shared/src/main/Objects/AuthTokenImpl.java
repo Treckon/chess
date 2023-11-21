@@ -1,6 +1,4 @@
-package ServerImpl.Objects;
-
-import ServerImpl.Objects.AuthToken;
+package Objects;
 
 import java.util.Objects;
 

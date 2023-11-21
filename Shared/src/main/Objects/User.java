@@ -1,4 +1,4 @@
-package ServerImpl.Objects;
+package Objects;
 /**
  * Object that contains user information, such as username, password, and email.
  */

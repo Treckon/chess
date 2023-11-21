@@ -1,4 +1,4 @@
-package ServerImpl.Objects;
+package Objects;
 
 import java.util.Objects;
 

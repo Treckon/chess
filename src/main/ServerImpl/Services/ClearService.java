@@ -4,7 +4,7 @@ package ServerImpl.Services;
 import ServerImpl.DAO.AuthDAOImpl;
 import ServerImpl.DAO.GameDAOImpl;
 import ServerImpl.DAO.UserDAOImpl;
-import ServerImpl.Responses.ClearResponse;
+import Responses.ClearResponse;
 import dataAccess.DataAccessException;
 
 /**

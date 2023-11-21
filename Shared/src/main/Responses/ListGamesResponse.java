@@ -1,6 +1,6 @@
-package ServerImpl.Responses;
+package Responses;
 
-import ServerImpl.Objects.Game;
+import Objects.Game;
 
 import java.util.ArrayList;
 import java.util.Objects;

@@ -1,6 +1,6 @@
 package ServerImpl.DAO;
 
-import ServerImpl.Objects.Game;
+import Objects.Game;
 import chess.ChessGameImpl;
 import dataAccess.DataAccessException;
 

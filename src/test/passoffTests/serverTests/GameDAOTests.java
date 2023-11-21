@@ -1,7 +1,7 @@
 package passoffTests.serverTests;
 
 import ServerImpl.DAO.GameDAOImpl;
-import ServerImpl.Objects.Game;
+import Objects.Game;
 import ServerImpl.Services.ClearService;
 import chess.ChessGameImpl;
 import dataAccess.DataAccessException;

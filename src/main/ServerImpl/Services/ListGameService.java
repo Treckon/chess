@@ -2,12 +2,9 @@ package ServerImpl.Services;
 
 import ServerImpl.DAO.AuthDAOImpl;
 import ServerImpl.DAO.GameDAOImpl;
-import ServerImpl.Objects.Game;
-import ServerImpl.Requests.ListGamesRequest;
-import ServerImpl.Requests.Request;
-import ServerImpl.Responses.CreateGameResponse;
-import ServerImpl.Responses.ListGamesResponse;
-import ServerImpl.Responses.Response;
+import Objects.Game;
+import Requests.ListGamesRequest;
+import Responses.ListGamesResponse;
 import dataAccess.DataAccessException;
 
 import java.util.ArrayList;

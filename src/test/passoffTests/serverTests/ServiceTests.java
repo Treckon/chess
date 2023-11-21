@@ -1,12 +1,15 @@
 package passoffTests.serverTests;
 
 
+import Objects.AuthToken;
+import Objects.AuthTokenImpl;
+import Objects.User;
+import Objects.UserImpl;
+import Requests.*;
+import Responses.*;
 import ServerImpl.DAO.AuthDAOImpl;
 import ServerImpl.DAO.GameDAOImpl;
 import ServerImpl.DAO.UserDAOImpl;
-import ServerImpl.Objects.*;
-import ServerImpl.Requests.*;
-import ServerImpl.Responses.*;
 import ServerImpl.Services.*;
 import chess.ChessGameImpl;
 import dataAccess.DataAccessException;

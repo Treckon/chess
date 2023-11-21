@@ -1,11 +1,9 @@
 package ServerImpl.Services;
 
 import ServerImpl.DAO.UserDAOImpl;
-import ServerImpl.Objects.AuthToken;
-import ServerImpl.Objects.AuthTokenImpl;
-import ServerImpl.Requests.LoginRequest;
-import ServerImpl.Requests.Request;
-import ServerImpl.Responses.LoginResponse;
+import Objects.AuthToken;
+import Requests.LoginRequest;
+import Responses.LoginResponse;
 import dataAccess.DataAccessException;
 
 

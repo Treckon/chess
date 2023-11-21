@@ -1,8 +1,5 @@
-package ServerImpl.Responses;
+package Responses;
 
-import ServerImpl.Objects.Game;
-
-import java.util.ArrayList;
 /**
  * Contains response information from creating game.
  *

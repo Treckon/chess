@@ -1,26 +1,21 @@
 package ServerImpl;
 
+import Objects.AuthTokenImpl;
+import Requests.*;
+import Responses.*;
 import ServerImpl.DAO.AuthDAOImpl;
 import ServerImpl.DAO.GameDAOImpl;
-import ServerImpl.Objects.AuthTokenImpl;
-import ServerImpl.Requests.*;
-import ServerImpl.Responses.*;
 import ServerImpl.Services.*;
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
 import dataAccess.Database;
-import spark.*;
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
 import java.sql.SQLException;
-import java.util.*;
-import java.util.logging.FileHandler;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class MainServer {
     private Database db = new Database();

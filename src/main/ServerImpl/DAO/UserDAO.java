@@ -1,7 +1,7 @@
 package ServerImpl.DAO;
 
-import ServerImpl.Objects.AuthToken;
-import ServerImpl.Objects.User;
+import Objects.AuthToken;
+import Objects.User;
 import dataAccess.DataAccessException;
 
 /**

@@ -1,12 +1,9 @@
 package ServerImpl.Services;
 
 import ServerImpl.DAO.AuthDAOImpl;
-import ServerImpl.DAO.GameDAO;
 import ServerImpl.DAO.GameDAOImpl;
-import ServerImpl.Requests.CreateGameRequest;
-import ServerImpl.Requests.Request;
-import ServerImpl.Responses.CreateGameResponse;
-import ServerImpl.Responses.Response;
+import Requests.CreateGameRequest;
+import Responses.CreateGameResponse;
 import dataAccess.DataAccessException;
 
 /**

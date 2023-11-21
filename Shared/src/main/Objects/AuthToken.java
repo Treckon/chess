@@ -1,4 +1,4 @@
-package ServerImpl.Objects;
+package Objects;
 /**
  * Object that contains a username that has logged in, with its designated AuthToken string.
  */

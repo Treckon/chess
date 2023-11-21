@@ -1,6 +1,6 @@
-package ServerImpl.Requests;
+package Requests;
 
-import ServerImpl.Objects.AuthToken;
+import Objects.AuthToken;
 
 /**
  * Request class for clearing all data.

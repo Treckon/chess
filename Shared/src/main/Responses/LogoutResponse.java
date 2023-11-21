@@ -1,17 +1,18 @@
-package ServerImpl.Responses;
+package Responses;
+
 /**
- * Contains response information from game joined.
+ * Contains response information from logging-out user.
  *
  * message - return message if something went wrong.
  */
-public class JoinGameResponse implements Response{
+public class LogoutResponse implements Response{
     private String message;
-    public JoinGameResponse(){}
+    public LogoutResponse(){}
     /**
      * Response if something went wrong.
      * @param m - returned Error message
      */
-    public JoinGameResponse(String m){
+    public LogoutResponse(String m){
         message = m;
     }
     @Override

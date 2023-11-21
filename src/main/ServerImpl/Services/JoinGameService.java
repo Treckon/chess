@@ -2,9 +2,8 @@ package ServerImpl.Services;
 
 import ServerImpl.DAO.AuthDAOImpl;
 import ServerImpl.DAO.GameDAOImpl;
-import ServerImpl.Requests.JoinGameRequest;
-import ServerImpl.Responses.CreateGameResponse;
-import ServerImpl.Responses.JoinGameResponse;
+import Requests.JoinGameRequest;
+import Responses.JoinGameResponse;
 import dataAccess.DataAccessException;
 
 /**

@@ -1,7 +1,8 @@
-package dataAccess;
+package deserializers;
 
 import chess.ChessPiece;
 import chess.ChessPieceImpl;
+import chess.pieces.*;
 import com.google.gson.*;
 
 import java.lang.reflect.Type;
