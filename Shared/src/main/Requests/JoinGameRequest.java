@@ -24,6 +24,11 @@ public class JoinGameRequest implements Request{
         playerColor = c;
         gameID = Id;
     }
+    public JoinGameRequest(Integer Id, AuthToken t){
+        token = t;
+        gameID = Id;
+        playerColor = null;
+    }
 
     public String getPlayerColor(){ return playerColor; }
 
