@@ -1,6 +1,7 @@
 package ServerImpl.DAO;
 
 import Objects.Game;
+import Objects.GameImpl;
 import chess.ChessGameImpl;
 import dataAccess.DataAccessException;
 
@@ -15,7 +16,7 @@ public interface GameDAO {
      *
      * @return list of gameIds
      */
-    public ArrayList<Game> listGames() throws DataAccessException;
+    public ArrayList<GameImpl> listGames() throws DataAccessException;
     /**
      * Takes in a String name and creates a game with that name, adding it to the list.
      * @param name name of game to be created.

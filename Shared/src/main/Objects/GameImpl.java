@@ -56,6 +56,9 @@ public class GameImpl implements Game {
         }
 
     }
+    public ChessGame getGame(){
+        return implementation;
+    }
 
     public String getWhiteUsername(){return whiteUsername;}
     public String getBlackUsername(){return blackUsername;}

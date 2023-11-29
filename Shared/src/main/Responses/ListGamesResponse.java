@@ -1,6 +1,7 @@
 package Responses;
 
 import Objects.Game;
+import Objects.GameImpl;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -13,14 +14,14 @@ import java.util.Objects;
  * message - return message if something went wrong.
  */
 public class ListGamesResponse implements Response{
-    private ArrayList<Game> games;
+    private ArrayList<GameImpl> games;
     private String message;
 
     /**
      * Response if everything went correctly.
      * @param g - list of current games in system.
      */
-    public ListGamesResponse(ArrayList<Game> g){
+    public ListGamesResponse(ArrayList<GameImpl> g){
         games = g;
     }
     /**
@@ -35,7 +36,7 @@ public class ListGamesResponse implements Response{
         return message;
     }
 
-    public ArrayList<Game> getList(){return games;}
+    public ArrayList<GameImpl> getList(){return games;}
 
     @Override
     public boolean equals(Object o) {

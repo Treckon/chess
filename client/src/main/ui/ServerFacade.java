@@ -3,118 +3,32 @@ package ui;
 import Objects.Game;
 import Objects.GameImpl;
 import Responses.ListGamesResponse;
-import chess.*;
+import chess.ChessBoard;
+import chess.ChessGame;
+import chess.ChessPiece;
+import chess.ChessPositionImpl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dataAccess.DataAccessException;
-import deserializers.GameDeserializer;
 import deserializers.GameEntryDeserializer;
-import deserializers.PositionDeserializer;
 
-import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.*;
-import java.sql.SQLException;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
-public class PreGame {
+public class ServerFacade {
     private static String authToken = null;
     private static Boolean loggedIn = false;
-
-    private static ServerFacade facade = new ServerFacade();
+    EscapeSequences lib = new EscapeSequences();
 
     private static ArrayList<GameImpl> currentGames;
 
-    public static void main(String[] args) throws URISyntaxException, IOException {
-        System.out.printf("Welcome to Chess 240! Type help to get started.\n");
-        Scanner scanner = new Scanner(System.in);
-
-        String userName = null;
-        URI uri = null;
-        HttpURLConnection http = null;
-        Boolean quit = false;
-
-        while(!quit) {
-            String line = scanner.nextLine();
-            var input = line.split(" ");
-            if (!loggedIn) {
-                switch (input[0]) {
-                    case "help":
-                        System.out.printf("register <USERNAME> <PASSWORD> <EMAIL> - to create an account\n" +
-                                "login <USERNAME> <PASSWORD> - to play chess\n" +
-                                "quit - playing chess\n" +
-                                "help - print out possible commands\n");
-                        break;
-                    case "quit":
-                        quit = true;
-                        System.out.printf("Thank you for playing.\n");
-                        break;
-                    case "register":
-                        if(facade.register(input)){
-                            loggedIn = true;
-                        }
-                        break;
-                    case "login":
-                        if(facade.login(input)){
-                            loggedIn = true;
-                        }
-                        break;
-                    default:
-                        System.out.printf("Invalid Input. Please try again, or press enter help for more options.\n");
-                        break;
-                }
-
-            } else {
-                switch (input[0]) {
-                    case "help":
-                        System.out.printf("create <NAME> - a game\n" +
-                                "list - games\n" +
-                                "join <ID> [WHITE|BLACK|<empty>] - a game\n" +
-                                "observe <ID> - a game\n" +
-                                "logout - when you are done\n" +
-                                "quit - playing chess\n" +
-                                "help - print out possible commands\n");
-                        break;
-                    case "quit":
-                        quit = true;
-                        facade.logout();
-                        break;
-                    case "create":
-                        facade.createGame(input);
-                        break;
-                    case "list":
-                        facade.ListGames(input);
-                        break;
-                    case "join":
-                        facade.resetGames();
-                        facade.joinGame(input);
-                        break;
-                    case "observe":
-                        facade.resetGames();
-                        facade.observeGame(input);
-                        break;
-                    case "logout":
-                        facade.logout();
-                        loggedIn = false;
-                        break;
-                    default:
-                        System.out.printf("Invalid Input. Please try again, or press enter help for more options.\n");
-                        break;
-                }
-
-            }
-
-        }
-
-    }
-
-
-    public static void register(String[] input) throws IOException, URISyntaxException{
+    public boolean register(String[] input) throws IOException, URISyntaxException {
         if(input.length >= 4){
             URI uri = new URI("http://localhost:8080/user");
             HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
@@ -134,10 +48,10 @@ public class PreGame {
                 System.out.printf("Successfully registered. You are now logged in.\n");
             }else if(http.getResponseCode() == 403){
                 System.out.printf("Error, already taken.\n");
-                return;
+                return false;
             }else{
                 System.out.printf("General Error:\n" + http.getResponseMessage() + "\n");
-                return;
+                return false;
             }
 
             try (InputStream respBody = http.getInputStream()) {
@@ -150,10 +64,12 @@ public class PreGame {
 
         }else{
             System.out.printf("Invalid input. Please enter - register <USERNAME> <PASSWORD> <EMAIL>\n");
+            return false;
         }
+        return true;
     }
 
-    public static void login(String[] input) throws IOException, URISyntaxException{
+    public Boolean login(String[] input) throws IOException, URISyntaxException{
         if(input.length >= 3){
             URI uri = new URI("http://localhost:8080/session");
             HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
@@ -173,10 +89,10 @@ public class PreGame {
                 System.out.printf("You are now logged in.\n");
             }else if(http.getResponseCode() == 401){
                 System.out.printf("Error, unauthorized.\n");
-                return;
+                return false;
             } else{
                 System.out.printf("General Error:\n" + http.getResponseMessage() + "\n");
-                return;
+                return false;
             }
 
             try (InputStream respBody = http.getInputStream()) {
@@ -190,8 +106,9 @@ public class PreGame {
         }else{
             System.out.printf("Invalid input. Please enter - login <USERNAME> <PASSWORD>\n");
         }
+        return true;
     }
-    public static void logout() throws IOException, URISyntaxException {
+    public void logout() throws IOException, URISyntaxException {
         URI uri = new URI("http://localhost:8080/session");
         HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
         http.setRequestMethod("DELETE");
@@ -213,6 +130,7 @@ public class PreGame {
             loggedIn = false;
             authToken = null;
             System.out.printf("You are now logged out.\n");
+            lib.editMessage("logout success");
         }
 
         try (InputStream respBody = http.getInputStream()) {
@@ -222,7 +140,7 @@ public class PreGame {
             System.out.println(response);
         }
     }
-    public static void createGame(String[] input) throws IOException, URISyntaxException{
+    public void createGame(String[] input) throws IOException, URISyntaxException{
         if(input.length < 2){
             System.out.printf("Invalid input.\n");
             return;
@@ -248,10 +166,10 @@ public class PreGame {
         } else if(http.getResponseCode() == 400){
             System.out.printf("Error, bad request.\n");
             return;
-        }/*else if(http.getResponseCode() == 500){
+        }else if(http.getResponseCode() == 500){
             System.out.printf("General Error:\n" + http.getResponseMessage() + "\n");
             return;
-        }*/
+        }
 
         try (InputStream respBody = http.getInputStream()) {
             InputStreamReader inputStreamReader = new InputStreamReader(respBody);
@@ -259,8 +177,9 @@ public class PreGame {
             var response = new Gson().fromJson(inputStreamReader, Map.class);
             System.out.println(response);
         }
+        lib.editMessage("create success");
     }
-    public static void joinGame(String[] input) throws IOException, URISyntaxException{
+    public void joinGame(String[] input) throws IOException, URISyntaxException{
         if(input.length < 2){
             System.out.printf("Invalid input.\n");
             return;
@@ -319,10 +238,10 @@ public class PreGame {
         }else if(http.getResponseCode() == 403){
             System.out.printf("Sorry, already taken.\n");
             return;
-        }/*else if(http.getResponseCode() == 500){
+        }else if(http.getResponseCode() == 500){
             System.out.printf("General Error:\n" + http.getResponseMessage() + "\n");
             return;
-        }*/else if(http.getResponseCode() == 400){
+        }else if(http.getResponseCode() == 400){
             System.out.printf("Bad Request\n");
             return;
         }
@@ -333,9 +252,10 @@ public class PreGame {
             var response = new Gson().fromJson(inputStreamReader, Map.class);
             System.out.println(response);
         }
+        lib.editMessage("join success");
         printBoards(currentGame);
     }
-    public static void observeGame(String[] input) throws IOException, URISyntaxException{
+    public void observeGame(String[] input) throws IOException, URISyntaxException{
         Boolean existsObserve = false;
         ChessGame currentGameObserve = null;
         for(GameImpl game: currentGames){
@@ -380,9 +300,10 @@ public class PreGame {
             var response = new Gson().fromJson(inputStreamReader, Map.class);
             System.out.println(response);
         }
+        lib.editMessage("observe success");
         printBoards(currentGameObserve);
     }
-    public static void ListGames(String[] input) throws IOException, URISyntaxException{
+    public void ListGames(String[] input) throws IOException, URISyntaxException{
         URI uri = new URI("http://localhost:8080/game");
         HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
         http.setRequestMethod("GET");
@@ -395,10 +316,10 @@ public class PreGame {
         if(http.getResponseCode() == 401){
             System.out.printf("Error, unauthorized.\n");
             return;
-        }/*else if(http.getResponseCode() == 500){
+        }else if(http.getResponseCode() == 500){
             System.out.printf("General Error:\n" + http.getResponseMessage() + "\n");
             return;
-        }*/
+        }
 
         var builder = new GsonBuilder();
         //builder.registerTypeAdapter(ChessPieceImpl.class, new GameDeserializer());
@@ -408,16 +329,19 @@ public class PreGame {
 
         try (InputStream respBody = http.getInputStream()) {
             InputStreamReader inputStreamReader = new InputStreamReader(respBody);
-            var response = builder.create().fromJson(inputStreamReader,ListGamesResponse.class);
+            var response = builder.create().fromJson(inputStreamReader, ListGamesResponse.class);
             //var response = new Gson().fromJson(inputStreamReader, ListGamesResponse.class);
             games = response.getList();
+            lib.editMessage(" " + games.size());
             System.out.println(response);
-            System.out.println(games.get(0));
+            if(games.isEmpty() || games == null){
+                return;
+            }else{
+                System.out.println(games.get(0));
+            }
         }
 
-        if(games == null){
-            return;
-        }
+
         //int i = 1;
 
         for(int i = 1; i <= games.size(); i++){
@@ -428,7 +352,7 @@ public class PreGame {
             System.out.printf("    Black Player: " + game.getBlackUsername() + "\n");
         }
     }
-    public static void resetGames() throws IOException, URISyntaxException {
+    public void resetGames() throws IOException, URISyntaxException {
         URI uri = new URI("http://localhost:8080/game");
         HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
         http.setRequestMethod("GET");
@@ -458,14 +382,14 @@ public class PreGame {
         }
     }
 
-    public static void printBoards(ChessGame currentGame){
+    public void printBoards(ChessGame currentGame){
         ChessBoard board = currentGame.getBoard();
         board.resetBoard();
         HashMap<Integer,Character> boardValues;
         //Black's perspective first
         System.out.print("\u001b[30:47m");
         System.out.printf("    h  g  f  e  d  c  b  a    ");
-        System.out.print("\u001b[40m");
+        System.out.print("\u001b[49m");
         System.out.println();
         for(int i = 1; i < 9; i++){
             System.out.print("\u001b[47m");
@@ -512,7 +436,7 @@ public class PreGame {
 
             System.out.print("\u001b[47m");
             System.out.printf(" " + i + " ");
-            System.out.print("\u001b[40m");
+            System.out.print("\u001b[49m");
             System.out.println();
         }
         System.out.print("\u001b[47m");
@@ -524,7 +448,7 @@ public class PreGame {
 
         System.out.print("\u001b[30:47m");
         System.out.printf("    a  b  c  d  e  f  g  h    ");
-        System.out.print("\u001b[40m");
+        System.out.print("\u001b[49m");
         System.out.println();
         for(int i = 8; i > 0; i--){
             System.out.print("\u001b[47m");
@@ -575,7 +499,7 @@ public class PreGame {
         }
         System.out.print("\u001b[47m");
         System.out.printf("    a  b  c  d  e  f  g  h    ");
-        System.out.print("\u001b[40m");
+        System.out.print("\u001b[49m");
         System.out.println();
         System.out.print("\u001b[39:49m");
     }

@@ -2,9 +2,7 @@ package ServerImpl.DAO;
 
 import Objects.Game;
 import Objects.GameImpl;
-import chess.ChessGameImpl;
-import chess.ChessPieceImpl;
-import chess.ChessPositionImpl;
+import chess.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dataAccess.DataAccessException;
@@ -21,8 +19,8 @@ import static java.sql.Statement.RETURN_GENERATED_KEYS;
 public class GameDAOImpl implements GameDAO {
     private static Integer nextCode = 1;
     @Override
-    public ArrayList<Game> listGames() throws DataAccessException {
-        ArrayList<Game> gameList = new ArrayList<Game>();
+    public ArrayList<GameImpl> listGames() throws DataAccessException {
+        ArrayList<GameImpl> gameList = new ArrayList<GameImpl>();
 
         Database db = new Database();
         Connection conn = null;
@@ -36,8 +34,8 @@ public class GameDAOImpl implements GameDAO {
                 while (rs.next()){
                     String json = rs.getString("game");
                     var builder = new GsonBuilder();
-                    builder.registerTypeAdapter(ChessPieceImpl.class, new GameDeserializer());
-                    builder.registerTypeAdapter(ChessPositionImpl.class, new PositionDeserializer());
+                    builder.registerTypeAdapter(ChessPiece.class, new GameDeserializer());
+                    builder.registerTypeAdapter(ChessPosition.class, new PositionDeserializer());
 
                     game = builder.create().fromJson(json,ChessGameImpl.class);
                     GameImpl listGame = new GameImpl(rs.getInt("gameid"),rs.getString(5),rs.getString("whitePlayer"),rs.getString("blackplayer"),game);
@@ -224,8 +222,8 @@ public class GameDAOImpl implements GameDAO {
                 while (rs.next()){
                     String json = rs.getString("game");
                     var builder = new GsonBuilder();
-                    builder.registerTypeAdapter(ChessPieceImpl.class, new GameDeserializer());
-                    builder.registerTypeAdapter(ChessPositionImpl.class, new PositionDeserializer());
+                    builder.registerTypeAdapter(ChessPiece.class, new GameDeserializer());
+                    builder.registerTypeAdapter(ChessPosition.class, new PositionDeserializer());
 
                     game = builder.create().fromJson(json,ChessGameImpl.class);
                 }

@@ -1,5 +1,6 @@
 package ServerImpl.Services;
 
+import Objects.GameImpl;
 import ServerImpl.DAO.AuthDAOImpl;
 import ServerImpl.DAO.GameDAOImpl;
 import Objects.Game;
@@ -32,7 +33,7 @@ public class ListGameService {
         }
 
         GameDAOImpl games = new GameDAOImpl();
-        ArrayList<Game> listGames;
+        ArrayList<GameImpl> listGames;
         try{
             listGames = games.listGames();
         }catch(DataAccessException e){

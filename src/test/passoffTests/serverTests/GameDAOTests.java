@@ -1,5 +1,6 @@
 package passoffTests.serverTests;
 
+import Objects.GameImpl;
 import ServerImpl.DAO.GameDAOImpl;
 import Objects.Game;
 import ServerImpl.Services.ClearService;
@@ -156,7 +157,7 @@ public class GameDAOTests {
             s.printStackTrace();
         }
 
-        ArrayList<Game> game = null;
+        ArrayList<GameImpl> game = null;
 
         try{
             game = games.listGames();
@@ -172,7 +173,7 @@ public class GameDAOTests {
     public void listGameFailure(){
         GameDAOImpl games = new GameDAOImpl();
 
-        ArrayList<Game> game = null;
+        ArrayList<GameImpl> game = null;
 
         try{
             game = games.listGames();
@@ -200,7 +201,7 @@ public class GameDAOTests {
             s.printStackTrace();
         }
 
-        ArrayList<Game> game = null;
+        ArrayList<GameImpl> game = null;
 
         try{
             game = games.listGames();
